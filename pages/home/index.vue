@@ -30,7 +30,7 @@
           mode="widthFix"
           src="../../static/img/home/icon_local.png"
         ></image>
-        <view class="flex-grow-1 flex-shrink-1" @click="toURL('timeline')">
+        <view class="flex-grow-1 flex-shrink-1" @click="toURL('contact')">
           本地通讯录 {{ local_concat_total }} 人
         </view>
         <image
@@ -38,7 +38,7 @@
           mode="widthFix"
           src="../../static/img/home/icon_remote.png"
         ></image>
-        <view class="flex-grow-1 flex-shrink-1">
+        <view class="flex-grow-1 flex-shrink-1" @click="toURL('timeline')">
           网络通讯录 {{ remote_concat_total }} 人
         </view>
       </view>
@@ -120,6 +120,7 @@ export default {
     }
   }
   .count {
+    margin-top: 20upx;
     font-size: 28upx;
 
     .icon-local-count {
@@ -128,7 +129,7 @@ export default {
     }
 
     .icon-remote-count {
-      width: 27upx;
+      width: 35upx;
       margin-right: 26upx;
     }
   }

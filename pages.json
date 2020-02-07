@@ -7,6 +7,12 @@
       }
     },
     {
+      "path": "pages/home/contact",
+      "style": {
+        "app-plus": { "titleNView": false }
+      }
+    },
+    {
       "path": "pages/home/timeline",
       "style": {
         "app-plus": { "titleNView": false }
