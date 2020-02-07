@@ -7,6 +7,12 @@
       }
     },
     {
+      "path": "pages/home/timeline",
+      "style": {
+        "app-plus": { "titleNView": false }
+      }
+    },
+    {
       "path": "pages/tools/index",
       "style": {
         "app-plus": { "titleNView": false }
@@ -14,6 +20,12 @@
     },
     {
       "path": "pages/tools/query",
+      "style": {
+        "app-plus": { "titleNView": false }
+      }
+    },
+    {
+      "path": "pages/tools/dial",
       "style": {
         "app-plus": { "titleNView": false }
       }

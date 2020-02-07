@@ -30,7 +30,7 @@
           mode="widthFix"
           src="../../static/img/home/icon_local.png"
         ></image>
-        <view class="flex-grow-1 flex-shrink-1">
+        <view class="flex-grow-1 flex-shrink-1" @click="toURL('timeline')">
           本地通讯录 {{ local_concat_total }} 人
         </view>
         <image
@@ -64,7 +64,13 @@ export default {
     }
   },
   onLoad () {},
-  methods: {}
+  methods: {
+    toURL (type) {
+      uni.navigateTo({
+        url: `/pages/home/${type}`
+      })
+    }
+  }
 }
 </script>
 
@@ -153,11 +159,11 @@ export default {
 
       &.upload::before {
         background-image: url(../../static/img/home/icon_upload.png);
-	  }
-	  
-	  &.download::before {
+      }
+
+      &.download::before {
         background-image: url(../../static/img/home/icon_download.png);
-	  }
+      }
 
       &::after {
         border: none;

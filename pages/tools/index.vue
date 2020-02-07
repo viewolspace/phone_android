@@ -2,13 +2,13 @@
   <view class="content">
     <view class="text-center title">工具箱</view>
     <uni-list class="item">
-      <uni-list-item @click="toQuery">
+      <uni-list-item @click="toURL('query')">
         <view class="name">手机号码归属地查询</view>
       </uni-list-item>
     </uni-list>
     <uni-list class="item">
       <uni-list-item>
-        <view class="name">拨号</view>
+        <view class="name" @click="toURL('dial')">拨号</view>
       </uni-list-item>
     </uni-list>
   </view>
@@ -23,9 +23,9 @@ export default {
     return {}
   },
   methods: {
-    toQuery () {
+    toURL (type) {
       uni.navigateTo({
-        url: '/pages/tools/query'
+        url: `/pages/tools/${type}`
       })
     }
   }
