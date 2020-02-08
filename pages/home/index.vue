@@ -25,21 +25,23 @@
         </view>
       </view>
       <view class="d-flex align-items-center count">
-        <image
-          class="icon-local-count"
-          mode="widthFix"
-          src="../../static/img/home/icon_local.png"
-        ></image>
+        <view class="d-flex align-items-center">
+          <image
+            class="icon-local-count"
+            src="../../static/img/home/icon_local.png"
+          ></image>
+        </view>
         <view class="flex-grow-1 flex-shrink-1" @click="toURL('contact')">
           本地通讯录 {{ local_concat_total }} 人
         </view>
-        <image
-          class="icon-remote-count"
-          mode="widthFix"
-          src="../../static/img/home/icon_remote.png"
-        ></image>
+        <view class="d-flex align-items-center">
+          <image
+            class="icon-remote-count"
+            src="../../static/img/home/icon_remote.png"
+          ></image>
+        </view>
         <view class="flex-grow-1 flex-shrink-1" @click="toURL('timeline')">
-          网络通讯录 {{ remote_concat_total }} 人
+            网络通讯录 {{ remote_concat_total }} 人
         </view>
       </view>
     </view>
@@ -125,11 +127,13 @@ export default {
 
     .icon-local-count {
       width: 19upx;
+      height: 26upx;
       margin-right: 26upx;
     }
 
     .icon-remote-count {
-      width: 35upx;
+      width: 27upx;
+      height: 23upx;
       margin-right: 26upx;
     }
   }
