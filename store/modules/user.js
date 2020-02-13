@@ -49,6 +49,19 @@ const actions = {
       headers: { token }
     })
     return message
+  },
+
+  getLocalUser ({ commit }) {
+    /*eslint-disable */
+    const sessionId = plus.storage.getItem('session_id')
+    const user = plus.storage.getItem('user')
+    console.log(user, sessionId)
+    if (sessionId) {
+      commit('SET_SESSION_ID', sessionId)
+    }
+    if (user) {
+      commit('SET_USER', user)
+    }
   }
 }
 

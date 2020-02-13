@@ -1,20 +1,14 @@
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
-  computed: {
-    ...mapState(['user'])
-  },
   onLaunch () {
-    console.log('onLaunch')
+    this.getLocalUser()
   },
-
-  onShow () {
-    console.log('App Show')
-  },
-
-  onHide () {
-    console.log('App Hide')
+  methods: {
+    ...mapActions({
+      getLocalUser: 'user/getLocalUser'
+    })
   }
 }
 </script>
