@@ -1,10 +1,19 @@
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
-  onLaunch: function () {},
-  onShow: function () {
+  computed: {
+    ...mapState(['user'])
+  },
+  onLaunch () {
+    console.log('onLaunch')
+  },
+
+  onShow () {
     console.log('App Show')
   },
-  onHide: function () {
+
+  onHide () {
     console.log('App Hide')
   }
 }
