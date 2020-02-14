@@ -89,7 +89,7 @@ export default {
     z-index: 9999;
     width: 100%;
     top: 0;
-    padding: 25upx;
+    padding: 40upx 25upx 25upx;
     color: white;
     font-size: 32upx;
     background: linear-gradient(

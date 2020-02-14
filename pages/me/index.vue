@@ -12,16 +12,16 @@
     </view>
     <view>
       <uni-list class="item">
-        <uni-list-item @click="showModifyNickname()">
+        <uni-list-item class="item-container" @click="showModifyNickname()">
           <view class="name">修改昵称</view>
         </uni-list-item>
       </uni-list>
       <uni-list class="item">
-        <uni-list-item>
-          <view class="name" @click="showPopup('policy')">隐私协议</view>
+        <uni-list-item class="item-container" @click="showPopup('policy')">
+          <view class="name">隐私协议</view>
         </uni-list-item>
-        <uni-list-item>
-          <view class="name" @click="showPopup('undo')">撤销同意隐私协议</view>
+        <uni-list-item class="item-container" @click="showPopup('undo')">
+          <view class="name">撤销同意隐私协议</view>
         </uni-list-item>
       </uni-list>
       <!-- <uni-list class="item">
@@ -30,7 +30,12 @@
         </uni-list-item>
       </uni-list> -->
       <uni-list class="logout">
-        <uni-list-item :show-arrow="false" v-if="user" @click="logout">
+        <uni-list-item
+          class="item-container"
+          :show-arrow="false"
+          v-if="user"
+          @click="logout"
+        >
           <view class="name">注销账户</view>
         </uni-list-item>
       </uni-list>
@@ -152,6 +157,13 @@ export default {
 </script>
 
 <style lang="scss">
+.item-container {
+  padding: 0 30upx;
+  /deep/ .uni-list-item__container {
+    padding-right: 0;
+  }
+}
+
 .content {
   .account {
     background: linear-gradient(

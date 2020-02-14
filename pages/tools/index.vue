@@ -38,7 +38,7 @@ export default {
   background: #f6f6f6;
 
   .title {
-    padding: 25upx;
+    padding: 40upx 25upx 25upx;
     color: white;
     font-size: 38upx;
     background: linear-gradient(

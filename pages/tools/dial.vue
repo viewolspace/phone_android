@@ -135,7 +135,7 @@ export default {
 <style lang="scss">
 .content {
   .title {
-    padding: 25upx;
+    padding: 40upx 25upx 25upx;
     color: white;
     font-size: 38upx;
     background: linear-gradient(

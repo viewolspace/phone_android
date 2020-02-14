@@ -142,7 +142,7 @@ export default {
     color: #ffffff;
 
     .title {
-      padding: 0 0 28upx 0;
+      padding: 20upx 0 28upx;
       font-size: 32upx;
     }
 

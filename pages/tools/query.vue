@@ -71,7 +71,7 @@ export default {
 
   .title {
     margin: 0 -28upx;
-    padding: 25upx;
+    padding: 40upx 25upx 25upx;
     color: white;
     font-size: 38upx;
     background: linear-gradient(
@@ -93,7 +93,6 @@ export default {
     background: #ffffff;
     .phone-input {
       color: #282828;
-      line-height: 80upx;
       font-size: 32upx;
       text-align: center;
     }
