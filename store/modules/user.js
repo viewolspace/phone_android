@@ -56,7 +56,6 @@ const actions = {
   },
 
   async updateNickName ({ state, dispatch }, nickName) {
-    console.log('dispatch: ', dispatch)
     const { data } = await uniRequest.post(
       '/user/updateNickName',
       {
@@ -100,7 +99,6 @@ const actions = {
       key: 'user',
       success (e) {
         if (e.data) {
-          console.log(JSON.stringify(e.data))
           commit('SET_USER', e.data)
         }
       }
