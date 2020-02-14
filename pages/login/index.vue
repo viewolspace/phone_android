@@ -1,7 +1,12 @@
 <template>
   <view class="content">
     <view class="title-container">
-      <view class="title"> <view class="label">登录</view></view>
+      <view class="title">
+        <navigator url="/pages/me/index" open-type="switchTab">
+          <img class="close" src="../../static/img/icon_close.png" alt="" />
+        </navigator>
+        <view class="label">登录</view>
+      </view>
     </view>
     <view class="login-form">
       <view class="phone-container">
@@ -42,11 +47,12 @@
 <script>
 import { mapActions } from 'vuex'
 import uniRequest from 'uni-request'
+import { uniPopup } from '@dcloudio/uni-ui'
 
 export default {
   data () {
     return {
-      phone: '18367603518',
+      phone: '13810436365',
       rand: '888888'
     }
   },
@@ -59,7 +65,8 @@ export default {
     }),
     async getVerification () {
       const token = await this.getToken()
-      const message = await this.getRand(token)
+      console.log(token)
+      const message = await this.getRand({ token, phone: this.phone })
       uni.showToast({
         title: message,
         duration: 2000
@@ -68,8 +75,22 @@ export default {
 
     async login () {
       const { phone, rand } = this
-      console.log({ phone, rand, idfa: plus.device.imei })
-      await this.getInformation({ phone, rand, idfa: plus.device.imei })
+      const { status, message } = await this.getInformation({
+        phone,
+        rand,
+        idfa: plus.device.imei
+      })
+      if (status === '0000') {
+        uni.switchTab({
+          url: '/pages/home/index'
+        })
+      } else {
+        uni.showToast({
+          icon: 'none',
+          title: message,
+          duration: 2000
+        })
+      }
     }
   }
 }
@@ -89,7 +110,13 @@ export default {
     .title {
       height: 457upx;
       position: relative;
-
+      .close {
+        width: 36upx;
+        height: 36upx;
+        position: absolute;
+        right: 27upx;
+        top: 75upx;
+      }
       .label {
         position: absolute;
         bottom: 194upx;

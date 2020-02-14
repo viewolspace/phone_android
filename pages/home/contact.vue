@@ -12,13 +12,13 @@
         全选
       </view>
     </view>
-    <scroll-view v-if="Object.keys(contacts).length">
+    <scroll-view v-if="Object.keys(contactsWithLetter).length">
       <view class="contact-group" v-for="letter in letters" :key="letter">
-        <view v-if="contacts[letter].length">
+        <view v-if="contactsWithLetter[letter].length">
           <view class="letter">
             {{ letter }}
           </view>
-          <view v-for="contact in contacts[letter]" :key="contact.id">
+          <view v-for="contact in contactsWithLetter[letter]" :key="contact.id">
             <view class="information d-flex align-items-center">
               <view></view>
               <view class="d-flex align-items-center">
@@ -31,10 +31,9 @@
                 class="ml-2 d-flex flex-column align-items-center justify-content-center"
               >
                 <view class="name">{{ contact.displayName }}</view>
-                <view class="count"
-                  ><text>{{ contact.phoneNumbers.length }}</text
-                  >个号码</view
-                >
+                <view class="count">
+                  <text> {{ contact.phoneNumbers.length }} </text>个号码
+                </view>
               </view>
             </view>
           </view>
@@ -53,83 +52,19 @@
 </template>
 
 <script>
-import pinyin from '../../tools/pinyin.js'
+import { mapState, mapGetter, mapActions } from 'vuex'
 
 export default {
   data () {
     return {
-      contacts: {},
-      letters: [
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J',
-        'K',
-        'L',
-        'M',
-        'N',
-        'O',
-        'P',
-        'Q',
-        'R',
-        'S',
-        'T',
-        'U',
-        'V',
-        'W',
-        'X',
-        'Y',
-        'Z',
-        '#'
-      ]
+      contacts: {}
     }
   },
+  computed: {
+    ...mapState('phone', ['letters']),
+    ...mapGetter('phone', ['contactsWithLetter'])
+  },
   onLoad () {
-    // #ifdef APP-PLUS
-    plus.contacts.getAddressBook(
-      plus.contacts.ADDRESSBOOK_PHONE,
-      addressbook => {
-        addressbook.find(
-          ['displayName', 'phoneNumbers'],
-          contacts => {
-            uni.showToast({
-              title: '获取联系人成功',
-              duration: 2000
-            })
-            let result = {}
-            for (let letter of this.letters) {
-              result[letter] = []
-            }
-            contacts.forEach(contact => {
-              let letter = pinyin.getCamelChars(contact['displayName'][0])
-              if (this.letters.indexOf(letter) === -1) letter = '#'
-              result[letter].push(contact)
-            })
-            this.contacts = result
-          },
-          () => {
-            uni.showToast({
-              title: '获取联系人失败',
-              duration: 2000
-            })
-          },
-          { multiple: true }
-        )
-      },
-      e => {
-        uni.showToast({
-          title: '获取通讯录对象失败:' + e.message,
-          duration: 2000
-        })
-      }
-    )
-    // #endif
     // #ifdef H5
     uni.showToast({
       icon: 'none',
@@ -138,7 +73,11 @@ export default {
     })
     // #endif
   },
-  methods: {}
+  methods: {
+    ...mapActions({
+      getLocalContacts: 'phone/getLocalContacts'
+    })
+  }
 }
 </script>
 

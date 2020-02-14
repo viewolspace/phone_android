@@ -4,18 +4,23 @@
  * @version 1.0.0
  * copyright 2014-2019, gandxiaowei@gmail.com all rights reserved.
  */
+import vue from 'vue'
 import uniRequest from 'uni-request'
 
 const state = {
-  user: {}
+  user: null,
+  sessionId: null
 }
 
-const getters = {}
+const getters = {
+  userId: state => (state.user ? state.user.userId : ''),
+  isLogin: state => !!state.sessionId
+}
 
 const actions = {
-  async getInformation ({ phone, rand, idfa }, { commit }) {
+  async getInformation ({ commit }, { phone, rand, idfa }) {
     const {
-      data: { status, result, sessionId }
+      data: { status, message, result, sessionId }
     } = await uniRequest.get('/user/login', {
       params: { phone, rand, idfa }
     })
@@ -23,6 +28,7 @@ const actions = {
       commit('SET_SESSION_ID', sessionId)
       commit('SET_USER', result)
     }
+    return { status, message }
   },
 
   async getToken () {
@@ -41,27 +47,71 @@ const actions = {
     }
   },
 
-  async getRand (token) {
-    const {
-      data: { message }
-    } = await uniRequest.get('/user/getRand', {
-      params: { phone: this.phone },
+  async getRand ({ commit }, { token, phone }) {
+    const { data } = await uniRequest.get('/user/getRand', {
+      params: { phone },
       headers: { token }
     })
-    return message
+    return data.message
+  },
+
+  async updateNickName ({ state }, nickName) {
+    const { data } = await uniRequest.post(
+      '/user/updateNickName',
+      {
+        nickName
+      },
+      {
+        headers: {
+          userId: state.user.userId
+        }
+      }
+    )
+    vue.set(state.user, 'nickName', nickName)
+    return data
+  },
+
+  async getUser ({ state, commit }) {
+    const {
+      data: { status, message, result, sessionId }
+    } = await uniRequest.get('/user/getUser', {
+      params: { userId: state.user.userId }
+    })
+    if (status === '0000') {
+      commit('SET_SESSION_ID', sessionId)
+      commit('SET_USER', result)
+    }
+    return { status, message }
   },
 
   getLocalUser ({ commit }) {
     /*eslint-disable */
-    const sessionId = plus.storage.getItem('session_id')
-    const user = plus.storage.getItem('user')
-    console.log(user, sessionId)
-    if (sessionId) {
-      commit('SET_SESSION_ID', sessionId)
-    }
-    if (user) {
-      commit('SET_USER', user)
-    }
+    uni.getStorage({
+      key: 'session_id',
+      success (e) {
+        if (e.data) {
+          commit('SET_SESSION_ID', e.data)
+        }
+      }
+    })
+    uni.getStorage({
+      key: 'user',
+      success (e) {
+        if (e.data) {
+          console.log(JSON.stringify(e.data))
+          commit('SET_USER', e.data)
+        }
+      }
+    })
+  },
+
+  setPolicyAgree ({ commit }, is_agree = true) {
+    uni.setStorage({ key: 'policy', data: is_agree })
+  },
+
+  logout ({ commit }) {
+    commit('SET_SESSION_ID', null)
+    commit('SET_USER', null)
   }
 }
 
@@ -69,13 +119,13 @@ const mutations = {
   SET_SESSION_ID (state, sessionId) {
     state.sessionId = sessionId
     /*eslint-disable */
-    plus.storage.setItem('session_id', sessionId)
+    uni.setStorage({ key: 'session_id', data: sessionId })
   },
 
   SET_USER (state, user) {
     state.user = user
     /*eslint-disable */
-    plus.storage.setItem('user', user)
+    uni.setStorage({ key: 'user', data: user })
   }
 }
 

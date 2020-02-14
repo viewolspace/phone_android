@@ -1,12 +1,6 @@
 {
   "pages": [
     {
-      "path": "pages/login/index",
-      "style": {
-        "app-plus": { "titleNView": false }
-      }
-    },
-    {
       "path": "pages/home/index",
       "style": {
         "app-plus": { "titleNView": false }
@@ -44,6 +38,12 @@
     },
     {
       "path": "pages/me/index",
+      "style": {
+        "app-plus": { "titleNView": false }
+      }
+    },
+    {
+      "path": "pages/login/index",
       "style": {
         "app-plus": { "titleNView": false }
       }

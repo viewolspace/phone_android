@@ -1,7 +1,11 @@
 <template>
   <view class="content">
     <view class="title d-flex align-items-center">
-      <image class="back" src="../../static/img/icon_back.png"></image>
+      <image
+        class="back"
+        @click="back()"
+        src="../../static/img/icon_back.png"
+      ></image>
     </view>
     <view class="timeline">
       <view class="item d-flex" v-for="(item, index) in timeline" :key="index">
@@ -25,13 +29,33 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
+      pageSize: 50,
       timeline: [1, 2, 3, 4, 5]
     }
   },
-  methods: {}
+  computed: {
+    ...mapState('user', ['user'])
+  },
+  onLoad () {
+    console.log(1)
+    this.getUserPhoneList({
+      userId: this.user.userId,
+      maxId: 0,
+      pageSize: this.pageSize
+    })
+  },
+  methods: {
+    ...mapActions({
+      getUserPhoneList: 'phone/getUserPhoneList'
+    }),
+    back () {
+      uni.navigateBack()
+    }
+  }
 }
 </script>
 

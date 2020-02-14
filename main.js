@@ -10,6 +10,8 @@ Vue.prototype.$store = store
 App.mpType = 'app'
 
 uniRequest.defaults.baseURL = 'http://39.106.166.222:8080/phoneWeb'
+uniRequest.defaults.headers.post['Content-Type'] =
+  'application/x-www-form-urlencoded'
 
 const app = new Vue({
   ...App,

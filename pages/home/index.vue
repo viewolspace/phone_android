@@ -13,10 +13,11 @@
         <view class="flex-grow-1 flex-shrink-1 information">
           <view class="d-flex align-items-center">
             <view class="detail flex-grow-1 flex-shrink-1">
-              账号:{{ user_account }}
+              <text v-if="user">账号:{{ user.phone }}</text>
+              <text v-else>未登录</text>
             </view>
-            <view>
-              <view class="signout">注销</view>
+            <view v-if="isLogin">
+              <view class="logout" @click="logout()">注销</view>
             </view>
           </view>
           <view>
@@ -41,7 +42,7 @@
           ></image>
         </view>
         <view class="flex-grow-1 flex-shrink-1" @click="toURL('timeline')">
-            网络通讯录 {{ remote_concat_total }} 人
+          网络通讯录 {{ remote_concat_total }} 人
         </view>
       </view>
     </view>
@@ -53,11 +54,41 @@
         下载通讯录
       </button>
     </view>
+    <uni-popup ref="show-policy-agreement" :mask-click="false">
+      <view class="uni-tip">
+        <text class="uni-tip-title">木瓜通讯助手隐私政策</text>
+        <view class="uni-tip-content policy">
+          欢迎使用“木瓜通讯助手”! 我们非常 重视您的个人信息和隐私保护。在您
+          使用“木瓜通讯助手”服务之前，请仔 细阅读《木瓜通讯助手隐私政策》，
+          我们将严格按照您同意的各项条款使 用您的个人信息，以便为您提供更好
+          的服务。
+          <view class="tip">
+            如您同意此政策，请点击“同意”并开始使用我们的产品和服务，我们尽全力保
+            护您的个人信息安全。
+          </view>
+        </view>
+        <view class="uni-tip-group-button">
+          <view
+            class="uni-tip-button"
+            @click="closePopup('policy-agreement')"
+          >
+            不同意
+          </view>
+          <view class="uni-tip-button confirm" @click="agreePolicy()">
+            同意
+          </view>
+        </view>
+      </view>
+    </uni-popup>
   </view>
 </template>
 
 <script>
+import { uniList, uniListItem, uniPopup } from '@dcloudio/uni-ui'
+import { mapState, mapGetters, mapActions } from 'vuex'
+
 export default {
+  components: { uniPopup },
   data () {
     return {
       user_account: '1234567890',
@@ -65,8 +96,30 @@ export default {
       remote_concat_total: 0
     }
   },
-  onLoad () {},
+  computed: {
+    ...mapState('user', ['user']),
+    ...mapGetters('user', ['isLogin'])
+  },
+  onReady () {
+    if (!uni.getStorageSync('policy')) {
+      this.showPopup('policy-agreement')
+    }
+  },
   methods: {
+    ...mapActions({
+      logout: 'user/logout',
+      setPolicyAgree: 'user/setPolicyAgree'
+    }),
+    showPopup (type) {
+      this.$refs[`show-${type}`].open()
+    },
+    closePopup (type) {
+      this.$refs[`show-${type}`].close()
+    },
+    agreePolicy () {
+      this.setPolicyAgree()
+      this.closePopup('policy-agreement')
+    },
     toURL (type) {
       uni.navigateTo({
         url: `/pages/home/${type}`
@@ -105,7 +158,7 @@ export default {
         background: transparent;
       }
 
-      .signout {
+      .logout {
         border-radius: 38upx;
         font-size: 24upx;
         color: #2bb9c1;
