@@ -55,7 +55,8 @@ const actions = {
     return data.message
   },
 
-  async updateNickName ({ state }, nickName) {
+  async updateNickName ({ state, dispatch }, nickName) {
+    console.log('dispatch: ', dispatch)
     const { data } = await uniRequest.post(
       '/user/updateNickName',
       {
@@ -67,7 +68,8 @@ const actions = {
         }
       }
     )
-    vue.set(state.user, 'nickName', nickName)
+    // vue.set(state.user, 'nickName', nickName)
+    dispatch('getUser')
     return data
   },
 
@@ -75,7 +77,7 @@ const actions = {
     const {
       data: { status, message, result, sessionId }
     } = await uniRequest.get('/user/getUser', {
-      params: { userId: state.user.userId }
+      headers: { userId: state.user.userId }
     })
     if (status === '0000') {
       commit('SET_SESSION_ID', sessionId)

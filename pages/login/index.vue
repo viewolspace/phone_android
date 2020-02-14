@@ -73,12 +73,13 @@ export default {
       })
     },
 
+    /*eslint-disable */
     async login () {
       const { phone, rand } = this
       const { status, message } = await this.getInformation({
         phone,
-        rand,
-        idfa: plus.device.imei
+        idfa: plus ? plus.device.imei : (Math.random() * 100).toFixed(0),
+        rand
       })
       if (status === '0000') {
         uni.switchTab({
