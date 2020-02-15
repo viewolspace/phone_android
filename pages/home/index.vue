@@ -33,7 +33,7 @@
           ></image>
         </view>
         <view class="flex-grow-1 flex-shrink-1" @click="toURL('contact')">
-          本地通讯录 {{ local_concat_total }} 人
+          本地通讯录 {{ contacts.length }} 人
         </view>
         <view class="d-flex align-items-center">
           <image
@@ -41,16 +41,20 @@
             src="../../static/img/home/icon_remote.png"
           ></image>
         </view>
-        <view class="flex-grow-1 flex-shrink-1" @click="toURL('timeline')">
-          网络通讯录 {{ remote_concat_total }} 人
+        <view class="flex-grow-1 flex-shrink-1">
+          网络通讯录 {{ lastest.length }} 人
         </view>
       </view>
     </view>
     <view class="operation-container flex-grow-1 flex-shrink-1">
-      <button class="operation upload">
-        上传通讯录
+      <button class="operation upload" @click="upload" :disabled="uploading">
+        {{ uploading ? '上传中...' : '上传通讯录' }}
       </button>
-      <button class="operation download">
+      <button
+        class="operation download"
+        @click="toURL('timeline')"
+        :disabled="uploading"
+      >
         下载通讯录
       </button>
     </view>
@@ -68,10 +72,7 @@
           </view>
         </view>
         <view class="uni-tip-group-button">
-          <view
-            class="uni-tip-button"
-            @click="closePopup('policy-agreement')"
-          >
+          <view class="uni-tip-button" @click="closePopup('policy-agreement')">
             不同意
           </view>
           <view class="uni-tip-button confirm" @click="agreePolicy()">
@@ -86,29 +87,36 @@
 <script>
 import { uniList, uniListItem, uniPopup } from '@dcloudio/uni-ui'
 import { mapState, mapGetters, mapActions } from 'vuex'
+// import permision from '@/js_sdk/wa-permission/permission.js'
 
 export default {
   components: { uniPopup },
   data () {
     return {
-      user_account: '1234567890',
-      local_concat_total: 0,
-      remote_concat_total: 0
+      uploading: false,
+      downloading: false
     }
   },
   computed: {
     ...mapState('user', ['user']),
-    ...mapGetters('user', ['isLogin'])
+    ...mapGetters('user', ['isLogin']),
+    ...mapState('phone', ['contacts', 'lastest'])
   },
   onReady () {
     if (!uni.getStorageSync('policy')) {
       this.showPopup('policy-agreement')
+    } else {
+      this.getUserPhone(this.user.userId)
+      this.getLocalContacts()
     }
   },
   methods: {
     ...mapActions({
       logout: 'user/logout',
-      setPolicyAgree: 'user/setPolicyAgree'
+      setPolicyAgree: 'user/setPolicyAgree',
+      getLocalContacts: 'phone/getLocalContacts',
+      getUserPhone: 'phone/getUserPhone',
+      uploadPhoneAddress: 'phone/uploadPhoneAddress'
     }),
     showPopup (type) {
       this.$refs[`show-${type}`].open()
@@ -117,8 +125,32 @@ export default {
       this.$refs[`show-${type}`].close()
     },
     agreePolicy () {
+      // await permision.requestAndroidPermission(android.permission.READ_CONTACTS)
+      // await permision.requestAndroidPermission(android.permission.WRITE_CONTACTS)
       this.setPolicyAgree()
+      this.getLocalContacts()
       this.closePopup('policy-agreement')
+    },
+    async upload () {
+      try {
+        this.uploading = true
+        const { status, message } = await this.uploadPhoneAddress(
+          this.user.userId
+        )
+        uni.showToast({
+          icon: status === '0000' ? 'success' : 'none',
+          title: message,
+          duration: 2000
+        })
+      } catch (e) {
+        uni.showToast({
+          icon: 'none',
+          title: '上传失败',
+          duration: 2000
+        })
+      } finally {
+        this.uploading = false
+      }
     },
     toURL (type) {
       uni.navigateTo({
