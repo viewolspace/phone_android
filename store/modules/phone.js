@@ -21,8 +21,11 @@ const getters = {
       result[letter] = []
     }
     contacts.forEach(contact => {
-      let letter = pinyin.getCamelChars(contact.displayName[0])
-      if (this.letters.indexOf(letter) === -1) letter = '#'
+      let letter = contact.displayName
+        ? pinyin.getCamelChars(contact.displayName[0])
+        : ''
+      letter = letter.toUpperCase()
+      if (letters.indexOf(letter) === -1) letter = '#'
       result[letter].push(contact)
     })
     return result
@@ -35,9 +38,7 @@ const actions = {
     const { data } = await uniRequest.get('/userPhone/getUserPhone', {
       headers: { userId }
     })
-    console.log(data)
     const { status, message, result } = data
-    console.log(status === '0000')
     if (status === '0000') {
       state.lastest = JSON.parse(result.content)
       return { status, message }
@@ -52,7 +53,6 @@ const actions = {
       headers: { userId }
     })
     if (status === '0000') {
-      console.log('获取通讯录成功')
       result.forEach((item, index) => {
         item.contacts = JSON.parse(item.content)
       })
@@ -63,16 +63,13 @@ const actions = {
         } else {
           item.increase = item.contacts.length
         }
-        console.log(item.increase)
       })
-      console.log(result)
       commit('SET_TIMELINE', result)
     }
     return { status, message }
   },
   // 上传通讯录
   async uploadPhoneAddress ({ state }, userId) {
-    console.log('userId: ', userId)
     const { data } = await uniRequest.post(
       '/userPhone/uploadPhoneAddress',
       {
@@ -96,8 +93,6 @@ const actions = {
         addressbook.find(
           ['name', 'phoneNumbers'],
           contacts => {
-            console.log(JSON.stringify(contacts))
-            console.log('获取本地联系人:' + contacts.length)
             commit('SET_LOCAL_CONTACTS', contacts)
           },
           () => {},
