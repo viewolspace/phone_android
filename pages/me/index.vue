@@ -10,7 +10,7 @@
         </view>
       </view>
     </view>
-    <view>
+    <view v-if="user">
       <uni-list class="item">
         <uni-list-item class="item-container" @click="showModifyNickname()">
           <view class="name">修改昵称</view>
@@ -33,7 +33,6 @@
         <uni-list-item
           class="item-container"
           :show-arrow="false"
-          v-if="user"
           @click="logout"
         >
           <view class="name">注销账户</view>
@@ -136,6 +135,9 @@ export default {
     },
     undoPolicyAgree () {
       this.setPolicyAgree(false)
+      // #ifdef APP-PLUS
+      plus.runtime.quit()
+      // #endif
       this.closePopup('undo')
     },
     async modifyNickName () {

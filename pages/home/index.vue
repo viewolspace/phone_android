@@ -3,7 +3,7 @@
     <view class="account">
       <view class="title">联系人管理</view>
       <view class="d-flex align-items-center">
-        <view>
+        <view @click="toMe()">
           <image
             class="icon-account"
             mode="aspectFit"
@@ -41,7 +41,7 @@
             src="../../static/img/home/icon_remote.png"
           ></image>
         </view>
-        <view class="flex-grow-1 flex-shrink-1">
+        <view class="flex-grow-1 flex-shrink-1" @click="toTimeline()">
           网络通讯录 {{ lastest.length }} 人
         </view>
       </view>
@@ -52,7 +52,7 @@
       </button>
       <button
         class="operation download"
-        @click="toURL('timeline')"
+        @click="toTimeline()"
         :disabled="uploading"
       >
         下载通讯录
@@ -72,7 +72,7 @@
           </view>
         </view>
         <view class="uni-tip-group-button">
-          <view class="uni-tip-button" @click="closePopup('policy-agreement')">
+          <view class="uni-tip-button" @click="disagreePolicy()">
             不同意
           </view>
           <view class="uni-tip-button confirm" @click="agreePolicy()">
@@ -131,7 +131,22 @@ export default {
       this.getLocalContacts()
       this.closePopup('policy-agreement')
     },
+    disagreePolicy () {
+      // #ifdef APP-PLUS
+      plus.runtime.quit()
+      // #endif
+      this.closePopup('policy-agreement')
+    },
     async upload () {
+      if (!this.isLogin) {
+        uni.showToast({
+          title: '请先登录',
+          icon: 'none',
+          duration: 2000,
+          mask: true
+        })
+        return uni.switchTab({ url: '/pages/me/index' })
+      }
       try {
         this.uploading = true
         const { status, message } = await this.uploadPhoneAddress(
@@ -151,6 +166,21 @@ export default {
       } finally {
         this.uploading = false
       }
+    },
+    toMe () {
+      uni.switchTab({ url: '/pages/me/index' })
+    },
+    toTimeline () {
+      if (!this.isLogin) {
+        uni.showToast({
+          title: '请先登录',
+          icon: 'none',
+          duration: 2000,
+          mask: true
+        })
+        return uni.switchTab({ url: '/pages/me/index' })
+      }
+      this.toURL('timeline')
     },
     toURL (type) {
       uni.navigateTo({

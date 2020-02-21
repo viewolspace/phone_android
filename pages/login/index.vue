@@ -69,6 +69,7 @@ export default {
       const message = await this.getRand({ token, phone: this.phone })
       uni.showToast({
         title: message,
+        icon: status === '0000' ? 'success' : 'none',
         duration: 2000
       })
     },
