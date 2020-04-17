@@ -1,5 +1,5 @@
 {
-    "name" : "木瓜电话",
+    "name" : "柠檬通讯助手",
     "appid" : "__UNI__ED086D0",
     "description" : "",
     "versionName" : "1.0.0",
@@ -35,7 +35,9 @@
             },
             "ios" : {},
             /* ios打包配置 */
-            "sdkConfigs" : {},
+            "sdkConfigs" : {
+                "ad" : {}
+            },
             "icons" : {
                 "android" : {
                     "hdpi" : "unpackage/res/icons/72x72.png",
