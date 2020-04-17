@@ -52,8 +52,8 @@ import { uniPopup } from '@dcloudio/uni-ui'
 export default {
   data () {
     return {
-      phone: '13810436365',
-      rand: '888888'
+      phone: '',
+      rand: ''
     }
   },
 
