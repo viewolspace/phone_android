@@ -57,10 +57,10 @@
     </uni-popup>
     <uni-popup ref="show-policy" :mask-click="false">
       <view class="uni-tip">
-        <text class="uni-tip-title">木瓜通讯助手隐私政策</text>
+        <text class="uni-tip-title">柠檬通讯助手隐私政策</text>
         <view class="uni-tip-content policy">
-          欢迎使用“木瓜通讯助手”! 我们非常 重视您的个人信息和隐私保护。在您
-          使用“木瓜通讯助手”服务之前，请仔 细阅读《木瓜通讯助手隐私政策》，
+          欢迎使用“柠檬通讯助手”! 我们非常 重视您的个人信息和隐私保护。在您
+          使用“柠檬通讯助手”服务之前，请仔 细阅读《柠檬通讯助手隐私政策》，
           我们将严格按照您同意的各项条款使 用您的个人信息，以便为您提供更好
           的服务。
           <view class="tip">
