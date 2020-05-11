@@ -47,6 +47,12 @@
       "style": {
         "app-plus": { "titleNView": false }
       }
+    },
+    {
+      "path": "pages/tools/web",
+      "style": {
+        "app-plus": { "titleNView": false }
+      }
     }
   ],
   "globalStyle": {

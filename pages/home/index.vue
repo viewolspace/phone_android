@@ -204,7 +204,7 @@ export default {
     color: #ffffff;
 
     .title {
-      padding: 20upx 0 28upx;
+	  padding: calc(var(--status-bar-height) + 20upx) 0 28upx;
       font-size: 32upx;
     }
 

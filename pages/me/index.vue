@@ -17,7 +17,7 @@
         </uni-list-item>
       </uni-list>
       <uni-list class="item">
-        <uni-list-item class="item-container" @click="showPopup('policy')">
+        <uni-list-item class="item-container" @click="toPrivacyWeb()">
           <view class="name">隐私协议</view>
         </uni-list-item>
         <uni-list-item class="item-container" @click="showPopup('undo')">
@@ -129,6 +129,11 @@ export default {
     },
     showPopup (type) {
       this.$refs[`show-${type}`].open()
+    },
+    toPrivacyWeb () {
+      uni.navigateTo({
+        url: '/pages/tools/web?url=http://www.chengheed.com/xy/nmdh_ysxy.htm'
+      })
     },
     closePopup (type) {
       this.$refs[`show-${type}`].close()

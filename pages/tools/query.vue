@@ -71,7 +71,7 @@ export default {
 
   .title {
     margin: 0 -28upx;
-    padding: 40upx 25upx 25upx;
+    padding: calc(var(--status-bar-height) + 25upx) 25upx 25upx 25upx;
     color: white;
     font-size: 38upx;
     background: linear-gradient(

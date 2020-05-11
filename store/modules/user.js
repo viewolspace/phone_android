@@ -30,12 +30,12 @@ const actions = {
     return { status, message }
   },
 
-  async getToken () {
+  async getToken ({ commit }, phone) {
     const {
       data: { token, status }
     } = await uniRequest.get('/user/getToken', {
       params: {
-        phone: this.phone
+        phone
       }
     })
 
@@ -51,7 +51,7 @@ const actions = {
       params: { phone },
       headers: { token }
     })
-    return data.message
+    return data
   },
 
   async updateNickName ({ state, dispatch }, nickName) {

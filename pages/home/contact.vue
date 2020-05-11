@@ -255,7 +255,7 @@ uni-checkbox {
 
   .title {
     width: 100%;
-    padding: 40upx 25upx 25upx;
+	padding: calc(var(--status-bar-height) + 20upx) 25upx 20upx 25upx;
     color: white;
     font-size: 32upx;
     background: linear-gradient(

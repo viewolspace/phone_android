@@ -37,8 +37,10 @@
       <view class="agreement">
         <label>
           <checkbox class="check" value="cb" checked="true" color="#2BB9C1" />
-          同意<text>《服务协议》</text>和<text>《隐私协议》</text>
+          同意
         </label>
+        <text @click="toServiceWeb()">《服务协议》</text>
+        和<text @click="toPrivacyWeb()"> 《隐私协议》</text>
       </view>
     </view>
   </view>
@@ -52,8 +54,8 @@ import { uniPopup } from '@dcloudio/uni-ui'
 export default {
   data () {
     return {
-      phone: '13810436365',
-      rand: '888888'
+      phone: '',
+      rand: ''
     }
   },
 
@@ -64,19 +66,44 @@ export default {
       getRand: 'user/getRand'
     }),
     async getVerification () {
-      const token = await this.getToken()
-      console.log(token)
-      const message = await this.getRand({ token, phone: this.phone })
-      uni.showToast({
-        title: message,
-        icon: status === '0000' ? 'success' : 'none',
-        duration: 2000
-      })
+      if (!this.phone) {
+        return uni.showToast({
+          title: '手机号码不能为空',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+      try {
+        const token = await this.getToken(this.phone)
+        const { message, status } = await this.getRand({
+          token,
+          phone: this.phone
+        })
+        uni.showToast({
+          title: message,
+          icon: status === '0000' ? 'success' : 'none',
+          duration: 2000
+        })
+      } catch (e) {}
     },
 
-    /*eslint-disable */
     async login () {
       const { phone, rand } = this
+      if (!phone) {
+        return uni.showToast({
+          title: '手机号码不能为空',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+      if (!rand) {
+        return uni.showToast({
+          title: '验证码1不能为空',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+
       const { status, message } = await this.getInformation({
         phone,
         idfa: plus ? plus.device.imei : (Math.random() * 100).toFixed(0),
@@ -93,6 +120,18 @@ export default {
           duration: 2000
         })
       }
+    },
+
+    toServiceWeb () {
+      uni.navigateTo({
+        url: '/pages/tools/web?url=http://www.chengheed.com/xy/nmdh_fwxy.htm'
+      })
+    },
+
+    toPrivacyWeb () {
+      uni.navigateTo({
+        url: '/pages/tools/web?url=http://www.chengheed.com/xy/nmdh_ysxy.htm'
+      })
     }
   }
 }
@@ -161,6 +200,10 @@ export default {
         color: #2bb9c1;
         font-size: 30upx;
 
+        &[disabled] {
+          color: #c2c2c2;
+        }
+
         &::after {
           height: 0;
           width: 0;
@@ -175,6 +218,10 @@ export default {
       background: #2bb9c1;
       border-radius: 44upx;
       font-size: 36upx;
+      &[disabled] {
+        background: #c2c2c2;
+      }
+
       &::after {
         border: none;
       }
