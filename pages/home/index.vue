@@ -63,8 +63,10 @@
         <text class="uni-tip-title">柠檬通讯助手隐私政策</text>
         <view class="uni-tip-content policy">
           欢迎使用“柠檬通讯助手”! 我们非常 重视您的个人信息和隐私保护。在您
-          使用“柠檬通讯助手”服务之前，请仔 细阅读《柠檬通讯助手隐私政策》，
-          我们将严格按照您同意的各项条款使 用您的个人信息，以便为您提供更好
+          使用“柠檬通讯助手”服务之前，请仔 细阅读<text
+            @click.stop="toPrivacyWeb()"
+            >《柠檬通讯助手隐私政策》</text
+          >， 我们将严格按照您同意的各项条款使 用您的个人信息，以便为您提供更好
           的服务。
           <view class="tip">
             如您同意此政策，请点击“同意”并开始使用我们的产品和服务，我们尽全力保
@@ -182,6 +184,11 @@ export default {
       }
       this.toURL('timeline')
     },
+    toPrivacyWeb () {
+      uni.navigateTo({
+        url: '/pages/tools/web?url=http://www.chengheed.com/xy/nmdh_ysxy.htm'
+      })
+    },
     toURL (type) {
       uni.navigateTo({
         url: `/pages/home/${type}`
@@ -204,7 +211,7 @@ export default {
     color: #ffffff;
 
     .title {
-	  padding: calc(var(--status-bar-height) + 20upx) 0 28upx;
+      padding: calc(var(--status-bar-height) + 20upx) 0 28upx;
       font-size: 32upx;
     }
 

@@ -2,8 +2,8 @@
     "name" : "柠檬通讯助手",
     "appid" : "__UNI__ED086D0",
     "description" : "",
-    "versionName" : "1.0.3",
-    "versionCode" : 103,
+    "versionName" : "1.0.4",
+    "versionCode" : 104,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true,

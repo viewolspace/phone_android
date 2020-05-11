@@ -25,8 +25,12 @@
           max-length="6"
           placeholder="请输入验证码"
         />
-        <button class="verificate" :disabled="!phone" @click="getVerification">
-          获取验证码
+        <button
+          class="verificate"
+          :disabled="!phone || remain > 0"
+          @click="getVerification"
+        >
+          {{ remain > 0 ? `剩余${remain}s` : '获取验证码' }}
         </button>
       </view>
       <view>
@@ -55,7 +59,9 @@ export default {
   data () {
     return {
       phone: '',
-      rand: ''
+      rand: '',
+      remain: 0,
+      intervalID: null
     }
   },
 
@@ -79,11 +85,16 @@ export default {
           token,
           phone: this.phone
         })
-        uni.showToast({
-          title: message,
-          icon: status === '0000' ? 'success' : 'none',
-          duration: 2000
-        })
+        if (status === '0000') {
+          this.remain = 60
+          this.countDown()
+        } else {
+          uni.showToast({
+            title: message,
+            icon: 'none',
+            duration: 2000
+          })
+        }
       } catch (e) {}
     },
 
@@ -132,6 +143,17 @@ export default {
       uni.navigateTo({
         url: '/pages/tools/web?url=http://www.chengheed.com/xy/nmdh_ysxy.htm'
       })
+    },
+
+    countDown () {
+      this.intervalID = setInterval(() => {
+        if (this.remain === 0) {
+          clearInterval(this.intervalID)
+          this.intervalID = null
+        } else {
+          this.remain--
+        }
+      }, 1000)
     }
   }
 }
